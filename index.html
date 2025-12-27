@@ -714,11 +714,11 @@
             btn.classList.toggle('active');
 
             if (musicEnabled) {
-                bgMusic.volume = 0.3; // Lower the BGM volume
+                bgMusic.volume = 0.3; 
                 bgMusic.play().catch(err => console.log('Music play failed:', err));
             } else {
                 bgMusic.pause();
-                bgMusic.currentTime = 0; // optional, reset to start
+                bgMusic.currentTime = 0;
             }
         }
         function setGameMode(mode) {

@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year Key Duel - Ultimate Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body.shake {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .sidebar {
+            width: 35%;
+            background: rgba(30, 30, 46, 0.95);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin: 20px 0 15px 0;
+            color: #a5b4fc;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            font-size: 1.1rem;
+        }
+
+        input,
+        select {
+            padding: 12px 16px;
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            outline: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .game-mode-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            padding: 10px;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #764ba2;
+        }
+
+        .leaderboard {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .leaderboard::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .leaderboard::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .leaderboard::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .leaderboard-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        .leaderboard-item.current {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .leaderboard-item span:last-child {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .arena {
+            display: flex;
+            gap: 80px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .player {
+            text-align: center;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            min-width: 180px;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .player:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .player h2 {
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .score {
+            font-size: 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 15px 0;
+            transition: all 0.2s ease;
+            font-weight: 700;
+        }
+
+        .key-display {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .kps-meter {
+            font-size: 0.9rem;
+            color: #a5b4fc;
+            margin-top: 10px;
+        }
+
+        .streak {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f5576c;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .on-fire {
+            animation: fireGlow 0.5s infinite;
+        }
+
+        @keyframes fireGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px #f5576c;
+            }
+
+            50% {
+                box-shadow: 0 0 40px #ff8a80;
+            }
+        }
+
+        .powerup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ffd89b 0%, #f5576c 100%);
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            z-index: 100;
+            animation: powerupPulse 0.5s infinite;
+            box-shadow: 0 0 30px rgba(245, 87, 108, 0.6);
+        }
+
+        @keyframes powerupPulse {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        #timer {
+            font-size: 3.5rem;
+            margin: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        #status {
+            font-size: 1.3rem;
+            margin-top: 20px;
+            text-align: center;
+            color: #a5b4fc;
+            font-weight: 500;
+        }
+
+        .winner {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 700;
+            animation: winnerPulse 1s ease-in-out infinite;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            top: -10px;
+            z-index: 1000;
+            animation: confettiFall 3s linear forwards;
+        }
+
+        .confetti:nth-child(2n) {
+            background: #764ba2;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #f093fb;
+        }
+
+        .confetti:nth-child(4n) {
+            background: #ffd89b;
+        }
+
+        .confetti:nth-child(5n) {
+            background: #f5576c;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes winnerPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .firework {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            z-index: 999;
+        }
+
+        @keyframes fireworkExplosion {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+
+        .player.winner-glow {
+            animation: winnerGlow 1s ease-in-out infinite;
+            border-color: #ffd89b !important;
+            box-shadow: 0 0 30px rgba(255, 216, 155, 0.6) !important;
+        }
+
+        @keyframes winnerGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 30px rgba(255, 216, 155, 0.6);
+            }
+
+            50% {
+                box-shadow: 0 0 50px rgba(255, 216, 155, 0.9);
+            }
+        }
+
+        .particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 500;
+            animation: particleFloat 1s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: scale(1.1);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stats-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #a5b4fc;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd89b 0%, #f5576c 100%);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 5px;
+            animation: badgeAppear 0.5s ease-out;
+        }
+
+        @keyframes badgeAppear {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        @media(max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+                max-height: 40vh;
+            }
+
+            .arena {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .controls {
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="bgMusic" loop>
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+    <div class="sidebar">
+        <h2><i class="fas fa-user-plus"></i> Add Players</h2>
+        <input id="playerName" placeholder="Enter player name" />
+        <button onclick="addPlayer()"><i class="fas fa-plus"></i> Add Player</button>
+
+        <h2><i class="fas fa-gamepad"></i> Game Mode</h2>
+        <div class="game-mode-selector">
+            <button class="mode-btn active" onclick="setGameMode('quick')">⚡ Quick (10s)</button>
+            <button class="mode-btn" onclick="setGameMode('speed')">🏃 Speed (30s)</button>
+            <button class="mode-btn" onclick="setGameMode('survival')">💪 Survival (100pts)</button>
+            <button class="mode-btn" onclick="setGameMode('best3')">🏆 Best of 3</button>
+        </div>
+
+        <h2><i class="fas fa-users"></i> Select Players</h2>
+        <select id="player1Select"></select>
+        <select id="player2Select"></select>
+
+        <h2><i class="fas fa-trophy"></i> Leaderboard</h2>
+        <div class="leaderboard" id="leaderboard"
+            style="min-height: 300px; background: rgba(255,255,255,0.02); border-radius: 10px; padding: 8px 0;"></div>
+
+        <h2><i class="fas fa-chart-line"></i> Current Stats</h2>
+        <div class="stats-panel" id="statsPanel">
+            <div class="stat-row">
+                <span class="stat-label">Total Games</span>
+                <span class="stat-value" id="totalGames">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Fastest Game</span>
+                <span class="stat-value" id="fastestGame">-</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Highest Score</span>
+                <span class="stat-value" id="highestScore">0</span>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-bolt"></i> Power-Ups Guide</h2>
+        <div class="stats-panel" style="font-size: 0.85rem; line-height: 1.6;">
+            <div style="margin-bottom: 8px;"><strong>⚡ 2X Multiplier</strong> - Double points for 5 seconds</div>
+            <div style="margin-bottom: 8px;"><strong>❄️ FREEZE</strong> - Each press steals 1 point from opponent</div>
+            <div style="margin-bottom: 8px;"><strong>🛡️ SHIELD</strong> - Protects from FREEZE attacks</div>
+            <div style="margin-top: 12px; color: #ffd89b;"><i class="fas fa-info-circle"></i> Power-ups spawn randomly
+                during gameplay. First to press their key claims it!</div>
+        </div>
+
+        <div id="achievementsList"></div>
+    </div>
+
+    <div class="main">
+        <h1><i class="fas fa-bolt"></i> New Year Key Duel</h1>
+        <div id="timer">10</div>
+
+        <div class="arena">
+            <div class="player" id="player1Card">
+                <h2 id="p1Name"><i class="fas fa-user"></i> ---</h2>
+                <div class="score" id="scoreA">0</div>
+                <div class="kps-meter" id="kpsA">0.0 KPS</div>
+                <div class="key-display"><i class="fas fa-keyboard"></i> <span id="key1">A</span></div>
+            </div>
+
+            <div class="player" id="player2Card">
+                <h2 id="p2Name"><i class="fas fa-user"></i> ---</h2>
+                <div class="score" id="scoreL">0</div>
+                <div class="kps-meter" id="kpsL">0.0 KPS</div>
+                <div class="key-display"><i class="fas fa-keyboard"></i> <span id="key2">L</span></div>
+            </div>
+        </div>
+
+        <div id="status"><i class="fas fa-info-circle"></i> Select 2 players, then press SPACE to start</div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="toggleSound()" title="Toggle Sound">
+            <i class="fas fa-volume-up" id="soundIcon"></i>
+        </button>
+        <button class="control-btn" onclick="toggleMusic()" title="Toggle Music">
+            <i class="fas fa-music" id="musicIcon"></i>
+        </button>
+    </div>
+
+    <script>
+        let players = [];
+        let currentPlayers = [];
+        let scoreA = 0, scoreL = 0;
+        let timeLeft = 10;
+        let gameActive = false;
+        let timerInterval;
+        let gameMode = 'quick';
+        let soundEnabled = true;
+        let musicEnabled = false;
+        let kpsA = 0, kpsL = 0;
+        let pressTimesA = [], pressTimesL = [];
+        let streakA = 0, streakL = 0;
+        let lastPressA = 0, lastPressL = 0;
+        let totalGames = 0;
+        let highestScore = 0;
+        let fastestGame = null;
+        let currentRound = 1;
+        let maxRounds = 1;
+        let roundsWonA = 0, roundsWonL = 0;
+        let achievements = new Set();
+        let powerUpActive = null;
+        let comboMultiplier = 1;
+        let key1 = 'a', key2 = 'l';
+
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(frequency, duration = 0.1) {
+            if (!soundEnabled) return;
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundIcon').className = soundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+        }
+
+        const bgMusic = document.getElementById('bgMusic');
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const icon = document.getElementById('musicIcon');
+            const btn = document.querySelector('.control-btn:nth-child(2)');
+
+            icon.className = musicEnabled ? 'fas fa-music' : 'fas fa-music';
+            btn.classList.toggle('active');
+
+            if (musicEnabled) {
+                bgMusic.volume = 0.3; // Lower the BGM volume
+                bgMusic.play().catch(err => console.log('Music play failed:', err));
+            } else {
+                bgMusic.pause();
+                bgMusic.currentTime = 0; // optional, reset to start
+            }
+        }
+        function setGameMode(mode) {
+            gameMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            switch (mode) {
+                case 'quick': timeLeft = 10; maxRounds = 1; break;
+                case 'speed': timeLeft = 30; maxRounds = 1; break;
+                case 'survival': timeLeft = 999; maxRounds = 1; break;
+                case 'best3': timeLeft = 10; maxRounds = 3; break;
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function () {
+            console.log("Page loaded");
+            renderLeaderboard();
+        });
+
+        function addPlayer() {
+            const name = document.getElementById("playerName").value.trim();
+            if (!name) {
+                alert("Please enter a player name!");
+                return;
+            }
+
+            // Check for duplicate names
+            if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+                alert("Player name already exists!");
+                return;
+            }
+
+            players.push({
+                name,
+                wins: 0,
+                totalGames: 0,
+                highestScore: 0,
+                fastestWin: null,
+                avgKPS: 0
+            });
+            document.getElementById("playerName").value = "";
+            updatePlayerSelects();
+            renderLeaderboard();
+            playSound(600, 0.1);
+        }
+
+        function updatePlayerSelects() {
+            const p1 = document.getElementById("player1Select");
+            const p2 = document.getElementById("player2Select");
+            p1.innerHTML = '<option value="">-- Select Player 1 --</option>';
+            p2.innerHTML = '<option value="">-- Select Player 2 --</option>';
+
+            players.forEach((p, index) => {
+                p1.add(new Option(p.name, index));
+                p2.add(new Option(p.name, index));
+            });
+        }
+
+        function startGame() {
+            const p1Index = document.getElementById("player1Select").value;
+            const p2Index = document.getElementById("player2Select").value;
+
+            if (p1Index === "" || p2Index === "" || p1Index === p2Index) {
+                alert("Select two different players!");
+                return;
+            }
+
+            document.getElementById("player1Card").classList.remove('winner-glow');
+            document.getElementById("player2Card").classList.remove('winner-glow');
+
+            currentPlayers = [players[p1Index], players[p2Index]];
+            scoreA = 0; scoreL = 0;
+
+            if (currentRound === 1) {
+                roundsWonA = 0; roundsWonL = 0;
+            }
+
+            switch (gameMode) {
+                case 'quick': timeLeft = 10; break;
+                case 'speed': timeLeft = 30; break;
+                case 'survival': timeLeft = 999; break;
+                case 'best3': timeLeft = 10; break;
+            }
+
+            gameActive = true;
+            pressTimesA = []; pressTimesL = [];
+            streakA = 0; streakL = 0;
+            comboMultiplier = 1;
+            powerUpActive = null;
+
+            document.getElementById("p1Name").innerHTML = `<i class="fas fa-user"></i> ${currentPlayers[0].name}`;
+            document.getElementById("p2Name").innerHTML = `<i class="fas fa-user"></i> ${currentPlayers[1].name}`;
+            document.getElementById("scoreA").textContent = 0;
+            document.getElementById("scoreL").textContent = 0;
+            document.getElementById("kpsA").textContent = "0.0 KPS";
+            document.getElementById("kpsL").textContent = "0.0 KPS";
+            document.getElementById("timer").textContent = timeLeft;
+            document.getElementById("status").textContent = "GO! GO! GO!";
+
+            playSound(800, 0.2);
+
+            const startTime = Date.now();
+
+            timerInterval = setInterval(() => {
+                if (gameMode !== 'survival') {
+                    timeLeft--;
+                    document.getElementById("timer").textContent = timeLeft;
+
+                    if (timeLeft <= 3 && timeLeft > 0) {
+                        playSound(1000, 0.1);
+                    }
+
+                    if (timeLeft <= 0) endGame(startTime);
+                } else {
+                    if (scoreA >= 100 || scoreL >= 100) endGame(startTime);
+                }
+
+                updateKPS();
+            }, 1000);
+
+            if (Math.random() < 0.5) {
+                setTimeout(() => spawnPowerUp(), Math.random() * 8000 + 5000);
+            }
+        }
+
+        function updateKPS() {
+            const now = Date.now();
+            pressTimesA = pressTimesA.filter(t => now - t < 1000);
+            pressTimesL = pressTimesL.filter(t => now - t < 1000);
+
+            kpsA = pressTimesA.length;
+            kpsL = pressTimesL.length;
+
+            document.getElementById("kpsA").textContent = kpsA.toFixed(1) + " KPS";
+            document.getElementById("kpsL").textContent = kpsL.toFixed(1) + " KPS";
+
+            if (kpsA >= 10) {
+                document.getElementById("player1Card").classList.add('on-fire');
+            } else {
+                document.getElementById("player1Card").classList.remove('on-fire');
+            }
+
+            if (kpsL >= 10) {
+                document.getElementById("player2Card").classList.add('on-fire');
+            } else {
+                document.getElementById("player2Card").classList.remove('on-fire');
+            }
+        }
+
+        function spawnPowerUp() {
+            if (!gameActive || powerUpActive) return;
+
+            const powerUps = [
+                { name: '2X', icon: '⚡', desc: '2X POINTS' },
+                { name: 'FREEZE', icon: '❄️', desc: 'STEAL POINTS' },
+                { name: 'SHIELD', icon: '🛡️', desc: 'PROTECTION' }
+            ];
+            const powerUp = powerUps[Math.floor(Math.random() * powerUps.length)];
+
+            const powerUpEl = document.createElement('div');
+            powerUpEl.className = 'powerup';
+            powerUpEl.innerHTML = `${powerUp.icon} ${powerUp.name}<br><small style="font-size: 0.8rem;">${powerUp.desc}</small><br><small style="font-size: 0.7rem;">Press your key first!</small>`;
+            document.querySelector('.arena').appendChild(powerUpEl);
+
+            playSound(1200, 0.3);
+
+            const powerUpTimeout = setTimeout(() => {
+                if (powerUpEl.parentNode) {
+                    powerUpEl.remove();
+                    powerUpActive = null;
+                }
+            }, 4000);
+
+            // Store power-up info for claiming
+            window.currentPowerUp = { element: powerUpEl, data: powerUp, timeout: powerUpTimeout, claimed: false };
+        }
+
+        function endGame(startTime) {
+            clearInterval(timerInterval);
+            gameActive = false;
+
+            const gameDuration = (Date.now() - startTime) / 1000;
+
+            let result = "<i class='fas fa-handshake'></i> TIE! Sudden Death!";
+            let winnerCard = null;
+            let winner = null;
+
+            if (scoreA > scoreL) {
+                roundsWonA++;
+                winner = currentPlayers[0];
+                winnerCard = document.getElementById("player1Card");
+                result = `<i class='fas fa-crown'></i> ${currentPlayers[0].name} Wins Round ${currentRound}!`;
+            }
+            if (scoreL > scoreA) {
+                roundsWonL++;
+                winner = currentPlayers[1];
+                winnerCard = document.getElementById("player2Card");
+                result = `<i class='fas fa-crown'></i> ${currentPlayers[1].name} Wins Round ${currentRound}!`;
+            }
+
+            if (maxRounds > 1 && currentRound < maxRounds) {
+                currentRound++;
+                setTimeout(() => {
+                    document.getElementById("status").innerHTML = `Round ${currentRound} - Press SPACE to continue`;
+                }, 2000);
+            } else {
+                currentRound = 1;
+
+                if (winner) {
+                    winner.wins++;
+                    winner.totalGames++;
+                    currentPlayers.forEach(p => p.totalGames++);
+
+                    const winnerScore = scoreA > scoreL ? scoreA : scoreL;
+                    if (winnerScore > winner.highestScore) {
+                        winner.highestScore = winnerScore;
+                    }
+
+                    if (!winner.fastestWin || gameDuration < winner.fastestWin) {
+                        winner.fastestWin = gameDuration;
+                    }
+
+                    checkAchievements(winner, winnerScore, gameDuration);
+                }
+
+                totalGames++;
+                highestScore = Math.max(highestScore, scoreA, scoreL);
+                if (!fastestGame || gameDuration < fastestGame) {
+                    fastestGame = gameDuration;
+                }
+
+                updateStats();
+            }
+
+            if (winnerCard) {
+                winnerCard.classList.add('winner-glow');
+                createConfetti();
+                createFireworks();
+                playSound(1500, 0.5);
+
+                if (scoreA >= 50 || scoreL >= 50) {
+                    document.body.classList.add('shake');
+                    setTimeout(() => document.body.classList.remove('shake'), 300);
+                }
+
+                setTimeout(() => {
+                    winnerCard.classList.remove('winner-glow');
+                }, 5000);
+            }
+
+            renderLeaderboard();
+
+            if (currentRound === 1) {
+                document.getElementById("status").innerHTML = `<div class="winner">${result}</div><br><i class="fas fa-info-circle"></i> Select next duel & press SPACE`;
+            } else {
+                document.getElementById("status").innerHTML = `<div class="winner">${result}</div>`;
+            }
+        }
+
+        function checkAchievements(player, score, duration) {
+            if (player.wins === 1 && !achievements.has('first_win')) {
+                achievements.add('first_win');
+                showAchievement('🎉 First Victory!');
+            }
+            if (player.wins === 10 && !achievements.has('ten_wins')) {
+                achievements.add('ten_wins');
+                showAchievement('🏆 10 Wins Champion!');
+            }
+            if (score >= 100 && !achievements.has('century')) {
+                achievements.add('century');
+                showAchievement('💯 Century Scorer!');
+            }
+            if (duration < 10 && !achievements.has('speed_demon')) {
+                achievements.add('speed_demon');
+                showAchievement('⚡ Speed Demon!');
+            }
+        }
+
+        function showAchievement(text) {
+            const badge = document.createElement('div');
+            badge.className = 'achievement-badge';
+            badge.textContent = text;
+            document.getElementById('achievementsList').appendChild(badge);
+            playSound(1800, 0.3);
+        }
+
+        function updateStats() {
+            document.getElementById('totalGames').textContent = totalGames;
+            document.getElementById('highestScore').textContent = highestScore;
+            document.getElementById('fastestGame').textContent = fastestGame ? fastestGame.toFixed(1) + 's' : '-';
+        }
+
+        function createParticles(x, y, color) {
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = color;
+                particle.style.setProperty('--x', (Math.random() - 0.5) * 100 + 'px');
+                particle.style.setProperty('--y', (Math.random() - 0.5) * 100 + 'px');
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        function renderLeaderboard() {
+            const lb = document.getElementById("leaderboard");
+            lb.innerHTML = "";
+
+            if (players.length === 0) {
+                lb.innerHTML = '<div style="text-align: center; color: #9ca3af; padding: 20px;">No players yet. Add players to start!</div>';
+                return;
+            }
+
+            // Add header row
+            const header = document.createElement('div');
+            header.className = 'leaderboard-item';
+            header.style.background = 'rgba(102,126,234,0.15)';
+            header.style.fontWeight = '700';
+            header.innerHTML = `<span>Player</span><span>Wins</span>`;
+            lb.appendChild(header);
+            [...players].sort((a, b) => b.wins - a.wins).forEach((p, index) => {
+                const div = document.createElement("div");
+                div.className = 'leaderboard-item';
+                // Highlight current players if they exist
+                if (currentPlayers.length > 0 && currentPlayers.some(cp => cp.name === p.name)) {
+                    div.classList.add('current');
+                }
+                const medal = index === 0 ? '🥇 ' : index === 1 ? '🥈 ' : index === 2 ? '🥉 ' : '';
+                div.innerHTML = `<span>${medal}${p.name}</span><span>${p.wins}</span>`;
+                lb.appendChild(div);
+            });
+        }
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#ffd89b', '#f5576c'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3500);
+                }, i * 50);
+            }
+        }
+
+        function createFireworks() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#ffd89b', '#f5576c'];
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight * 0.5 + 100;
+                    for (let j = 0; j < 30; j++) {
+                        const firework = document.createElement('div');
+                        firework.className = 'firework';
+                        firework.style.left = x + 'px';
+                        firework.style.top = y + 'px';
+                        firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        const angle = (Math.PI * 2 * j) / 30;
+                        const velocity = Math.random() * 100 + 50;
+                        const xMove = Math.cos(angle) * velocity;
+                        const yMove = Math.sin(angle) * velocity;
+                        firework.style.setProperty('--x', xMove + 'px');
+                        firework.style.setProperty('--y', yMove + 'px');
+                        firework.style.animation = `fireworkExplosion ${Math.random() * 0.5 + 0.5}s ease-out forwards`;
+                        document.body.appendChild(firework);
+                        setTimeout(() => firework.remove(), 1000);
+                    }
+                }, i * 400);
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.code === "Space" && !gameActive) {
+                e.preventDefault();
+                startGame();
+            }
+            if (!gameActive) return;
+
+            const now = Date.now();
+
+            // Claim power-up
+            if (window.currentPowerUp && !window.currentPowerUp.claimed && (e.key.toLowerCase() === key1 || e.key.toLowerCase() === key2)) {
+                window.currentPowerUp.claimed = true;
+                const claimer = e.key.toLowerCase() === key1 ? 'Player 1' : 'Player 2';
+                powerUpActive = window.currentPowerUp.data.name;
+
+                // Remove power-up visual
+                if (window.currentPowerUp.element.parentNode) {
+                    window.currentPowerUp.element.remove();
+                }
+                clearTimeout(window.currentPowerUp.timeout);
+
+                // Show who claimed it
+                const claimMsg = document.createElement('div');
+                claimMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #ffd89b 0%, #f5576c 100%); padding: 20px 40px; border-radius: 15px; font-size: 1.5rem; font-weight: 700; z-index: 1001; animation: powerupPulse 0.5s ease-out;';
+                claimMsg.textContent = `${claimer} got ${window.currentPowerUp.data.icon} ${powerUpActive}!`;
+                document.body.appendChild(claimMsg);
+                setTimeout(() => claimMsg.remove(), 2000);
+
+                playSound(1500, 0.4);
+
+                // Auto-deactivate after 5 seconds
+                setTimeout(() => {
+                    if (powerUpActive === window.currentPowerUp.data.name) {
+                        powerUpActive = null;
+                        comboMultiplier = 1;
+                    }
+                }, 5000);
+
+                window.currentPowerUp = null;
+            }
+
+            if (e.key.toLowerCase() === key1) {
+                let points = 1 * comboMultiplier;
+
+                if (powerUpActive === '2X') points *= 2;
+                if (powerUpActive === 'FREEZE' && scoreL > 0) {
+                    scoreL = Math.max(0, scoreL - 1);
+                    document.getElementById("scoreL").textContent = scoreL;
+                }
+
+                scoreA += points;
+                pressTimesA.push(now);
+
+                if (now - lastPressA < 200) {
+                    streakA++;
+                    if (streakA >= 5) comboMultiplier = 2;
+                } else {
+                    streakA = 0;
+                    comboMultiplier = 1;
+                }
+                lastPressA = now;
+
+                const el = document.getElementById("scoreA");
+                el.textContent = scoreA;
+                el.style.transform = "scale(1.3)";
+                setTimeout(() => el.style.transform = "scale(1)", 100);
+
+                const freq = 400 + (scoreA * 10);
+                playSound(Math.min(freq, 1200), 0.05);
+
+                const card = document.getElementById("player1Card");
+                const rect = card.getBoundingClientRect();
+                createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, '#667eea');
+
+                if (scoreA % 10 === 0 && scoreA > 0) {
+                    document.body.classList.add('shake');
+                    setTimeout(() => document.body.classList.remove('shake'), 200);
+                }
+            }
+
+            if (e.key.toLowerCase() === key2) {
+                let points = 1 * comboMultiplier;
+
+                if (powerUpActive === '2X') points *= 2;
+                if (powerUpActive === 'FREEZE' && scoreA > 0) {
+                    scoreA = Math.max(0, scoreA - 1);
+                    document.getElementById("scoreA").textContent = scoreA;
+                }
+
+                scoreL += points;
+                pressTimesL.push(now);
+
+                if (now - lastPressL < 200) {
+                    streakL++;
+                    if (streakL >= 5) comboMultiplier = 2;
+                } else {
+                    streakL = 0;
+                    comboMultiplier = 1;
+                }
+                lastPressL = now;
+
+                const el = document.getElementById("scoreL");
+                el.textContent = scoreL;
+                el.style.transform = "scale(1.3)";
+                setTimeout(() => el.style.transform = "scale(1)", 100);
+
+                const freq = 400 + (scoreL * 10);
+                playSound(Math.min(freq, 1200), 0.05);
+
+                const card = document.getElementById("player2Card");
+                const rect = card.getBoundingClientRect();
+                createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, '#764ba2');
+
+                if (scoreL % 10 === 0 && scoreL > 0) {
+                    document.body.classList.add('shake');
+                    setTimeout(() => document.body.classList.remove('shake'), 200);
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

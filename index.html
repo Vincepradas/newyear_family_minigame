@@ -714,7 +714,7 @@
             btn.classList.toggle('active');
 
             if (musicEnabled) {
-                bgMusic.volume = 0.3; 
+                bgMusic.volume = 0.3; // Lower the BGM volume
                 bgMusic.play().catch(err => console.log('Music play failed:', err));
             } else {
                 bgMusic.pause();
@@ -1219,6 +1219,10 @@
         });
     </script>
 
+    <footer
+        style="width:100%;position:fixed;bottom:0;left:0;color:#fff;text-align:center;padding:10px 0;font-size:8px;z-index:1000;letter-spacing:0.5px;">
+        © 2025 VincePradas
+    </footer>
 </body>
 
 </html>
